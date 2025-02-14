@@ -2,42 +2,11 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import errorIcon from '../img/error.svg';
-
-const box = document.querySelector('.gallery');
-const load = document.querySelector('.load');
-const addMoreButton = document.querySelector('.add-more-button');
-const iziOption = {
-  messageColor: '#FAFAFB',
-  messageSize: '16px',
-  backgroundColor: '#EF4040',
-  iconUrl: errorIcon,
-  transitionIn: 'bounceInLeft',
-  position: 'topRight',
-  displayMode: 'replace',
-  closeOnClick: true,
-};
-
-export function addLoadStroke(daddyElement) {
-  daddyElement.insertAdjacentHTML(
-    'beforeend',
-    '<p class="loading-text">Wait, the image is loaded</p><span class="loader"></span>'
-  );
-  addMoreButton.classList.add('hide');
-}
-
-export function removeLoadStroke(daddyElement) {
-  const textElement = daddyElement.querySelector('.loading-text');
-  const loaderElement = daddyElement.querySelector('.loader');
-
-  if (textElement) textElement.remove();
-  if (loaderElement) loaderElement.remove();
-
-  addMoreButton.classList.remove('hide');
-}
+import { iziOption } from '../main';
 
 export function markup(data) {
-  const { hits } = data;
+  let { hits } = data;
+  const box = document.querySelector('.gallery');
 
   if (hits.length === 0) {
     iziToast.show({
@@ -69,9 +38,7 @@ export function markup(data) {
       </li>`
     )
     .join(' ');
-  removeLoadStroke(load);
-  box.insertAdjacentHTML('beforeend', markup);
-
+  box.innerHTML = markup;
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionDelay: 250,
